@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Uttarakhand Electricity Bill Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    label, input, button {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+    }
+    input {
+      padding: 8px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px;
+      margin-top: 20px;
+      background: #2d89ef;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      background: #eef;
+      padding: 15px;
+      border-radius: 6px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Uttarakhand Electricity Bill Calculator</h1>
+    <label for="prevUnits">Previous Month Units:</label>
+    <input type="number" id="prevUnits" placeholder="e.g., 1000" />
+    <label for="currentUnits">Current Unit Reading:</label>
+    <input type="number" id="currentUnits" placeholder="e.g., 1600" />
+    <button onclick="calculateBill()">Calculate</button>
+    <button onclick="clearFields()" style="background-color: #6c757d; margin-top: 10px;">Clear</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function clearFields() {
+      document.getElementById("prevUnits").value = "";
+      document.getElementById("currentUnits").value = "";
+      document.getElementById("result").textContent = "";
+    }
+
+    function calculateBill() {
+      const prevUnits = parseFloat(document.getElementById("prevUnits").value);
+      const currentUnits = parseFloat(document.getElementById("currentUnits").value);
+      let result = '';
+
+      if (isNaN(prevUnits) || isNaN(currentUnits) || prevUnits < 0 || currentUnits < 0) {
+        document.getElementById("result").textContent = "Please enter valid numbers for both fields.";
+        return;
+      }
+
+      if (currentUnits < prevUnits) {
+        document.getElementById("result").textContent = "Current unit reading cannot be less than previous month units.";
+        return;
+      }
+
+      const units = currentUnits - prevUnits;
+
+      let remaining = units;
+      let total = 0;
+
+      const breakdown = [];
+
+      if (remaining > 0) {
+        const slab = Math.min(remaining, 100);
+        const cost = slab * 3.40;
+        total += cost;
+        breakdown.push(`First 100 units @ ₹3.40 = ₹${cost.toFixed(2)}`);
+        remaining -= slab;
+      }
+
+      if (remaining > 0) {
+        const slab = Math.min(remaining, 100);
+        const cost = slab * 4.30;
+        total += cost;
+        breakdown.push(`Next 100 units @ ₹4.30 = ₹${cost.toFixed(2)}`);
+        remaining -= slab;
+      }
+
+      if (remaining > 0) {
+        const slab = Math.min(remaining, 200);
+        const cost = slab * 6.70;
+        total += cost;
+        breakdown.push(`Next 200 units @ ₹6.70 = ₹${cost.toFixed(2)}`);
+        remaining -= slab;
+      }
+
+      if (remaining > 0) {
+        const cost = remaining * 7.35;
+        total += cost;
+        breakdown.push(`Remaining ${remaining} units @ ₹7.35 = ₹${cost.toFixed(2)}`);
+      }
+
+      const fixedCharge = 80; // 4 kW * ₹20/kW
+      const electricityDuty = units * 0.06;
+      const grandTotal = total + fixedCharge + electricityDuty;
+
+      result += `Units Consumed: ${units}\n`;
+      result += `(Current: ${currentUnits} - Previous: ${prevUnits})\n\nBreakdown:\n${breakdown.join('\n')}`;
+      result += `\nFixed Charges: ₹${fixedCharge.toFixed(2)}`;
+      result += `\nElectricity Duty @ ₹0.06/unit: ₹${electricityDuty.toFixed(2)}`;
+      result += `\n\nTotal Payable: ₹${grandTotal.toFixed(2)}`;
+
+      document.getElementById("result").textContent = result;
+    }
+  </script>
+  <p style="color: red; font-weight: bold; text-align: center; margin-top: 20px;">Approximate bill calculation</p>
+</body>
+</html>
