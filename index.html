@@ -74,7 +74,7 @@
     <button onclick="calculateBill()">Calculate</button>
     <button onclick="clearFields()" style="background-color: #6c757d; margin-top: 10px;">Clear</button>
     <div class="result" id="result"></div>
-    <p style="font-weight: bold; text-align: center; margin-top: 20px; margin-bottom: 5px; color: red;">DISCLAIMER</p>
+    <p style="font-weight: bold; text-align: center; margin-top: 20px; margin-bottom: 5px; color: red;">DISCLAIMER</p> 
     <p style="color: red; font-weight: bold; text-align: justify; margin-top: 0px;">!! The calculation provided by this tool is an approximation based on the defined slab rates and charges. It should be used for estimation purposes only and may not reflect the exact official bill amount.</p>
   </div>
 
@@ -82,7 +82,7 @@
     function clearFields() {
       document.getElementById("prevUnits").value = "";
       document.getElementById("currentUnits").value = "";
-      document.getElementById("result").textContent = "";
+      document.getElementById("result").innerHTML = ""; // Changed to innerHTML
     }
 
     function calculateBill() {
@@ -91,12 +91,12 @@
       let result = '';
 
       if (isNaN(prevUnits) || isNaN(currentUnits) || prevUnits < 0 || currentUnits < 0) {
-        document.getElementById("result").textContent = "Please enter valid numbers for both fields.";
+        document.getElementById("result").innerHTML = "Please enter valid numbers for both fields."; // Changed to innerHTML
         return;
       }
 
       if (currentUnits < prevUnits) {
-        document.getElementById("result").textContent = "Current unit reading cannot be less than previous month units.";
+        document.getElementById("result").innerHTML = "Current unit reading cannot be less than previous month units."; // Changed to innerHTML
         return;
       }
 
@@ -141,13 +141,13 @@
       const electricityDuty = units * 0.06;
       const grandTotal = total + fixedCharge + electricityDuty;
 
-      result += `Units Consumed: ${units}\\n`;
-      result += `(Current: ${currentUnits} - Previous: ${prevUnits})\\n\\nBreakdown:\\n${breakdown.join('\\n')}`;
-      result += `\\nFixed Charges: ₹${fixedCharge.toFixed(2)}`;
-      result += `\\nElectricity Duty @ ₹0.06/unit: ₹${electricityDuty.toFixed(2)}`;
-      result += `\\n\\nTotal Payable: ₹${grandTotal.toFixed(2)}`;
+      result += `Units Consumed: ${units}<br>`;
+      result += `(Current: ${currentUnits} - Previous: ${prevUnits})<br><br><strong>Breakdown:</strong><br>${breakdown.join('<br>')}`;
+      result += `<br>Fixed Charges: ₹${fixedCharge.toFixed(2)}`;
+      result += `<br>Electricity Duty @ ₹0.06/unit: ₹${electricityDuty.toFixed(2)}`;
+      result += `<br><br><strong>Total Payable: ₹${grandTotal.toFixed(2)}</strong>`;
 
-      document.getElementById("result").textContent = result;
+      document.getElementById("result").innerHTML = result; // Changed to innerHTML
     }
   </script>
 </body>
