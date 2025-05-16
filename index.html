@@ -2,81 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- SEO Meta Tags -->
   <meta name="description" content="Easily calculate your Uttarakhand electricity bill. Get an instant estimate based on current UPCL tariff slabs, including fixed charges and electricity duty. Simple and accurate.">
   <meta name="keywords" content="Uttarakhand electricity bill calculator, UPCL bill calculator, electricity bill estimate, Uttarakhand power tariff, energy consumption calculator, UJVNL, PTCUL, electricity bill, Uttarakhand">
-  <!-- Replace YOUR_CANONICAL_URL_HERE with the actual URL of your page when deployed -->
   <link rel="canonical" href="https://uttarakhand-ebill-calculator.netlify.app/">
-
-  <!-- Open Graph Meta Tags (for social media sharing) -->
   <meta property="og:title" content="Uttarakhand Electricity Bill Calculator">
   <meta property="og:description" content="Easily calculate your Uttarakhand electricity bill. Get an instant estimate based on current UPCL tariff slabs.">
   <meta property="og:type" content="website">
-  <!-- Replace YOUR_CANONICAL_URL_HERE with the actual URL of your page when deployed -->
   <meta property="og:url" content="https://uttarakhand-ebill-calculator.netlify.app/">
   <meta property="og:site_name" content="Uttarakhand Electricity Bill Calculator">
-  <!-- <meta property="og:image" content="URL_TO_AN_IMAGE_REPRESENTING_YOUR_CALCULATOR"> -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Uttarakhand Electricity Bill Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      padding: 20px;
-      color: #333;
-      margin: 0;
-    }
-    h1 {
-      text-align: center;
-    }
-    .container {
-      max-width: 600px;
-      margin: 20px auto;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    label, input, button {
-      display: block;
-      width: 100%;
-      margin-top: 10px;
-    }
-    input {
-      padding: 8px;
-      font-size: 16px;
-    }
-    button {
-      padding: 10px;
-      margin-top: 20px;
-      background: #2d89ef;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .result {
-      margin-top: 20px;
-      background: #eef;
-      padding: 15px;
-      border-radius: 6px;
-      white-space: pre-wrap;
-    }
-
-    /* Media query for smaller screens */
-    @media (max-width: 768px) {
-      .container {
-        max-width: 100%;
-        padding: 10px;
-        margin: 10px auto;
-      }
-      input, button {
-        font-size: 14px;
-        padding: 6px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
@@ -92,77 +28,10 @@
     <p style="color: red; font-weight: bold; text-align: justify; margin-top: 0px;">!! The calculation provided by this tool is an approximation based on the defined slab rates and charges. It should be used for estimation purposes only and may not reflect the exact official bill amount.</p>
   </div>
 
-  <script>
-    function clearFields() {
-      document.getElementById("prevUnits").value = "";
-      document.getElementById("currentUnits").value = "";
-      document.getElementById("result").innerHTML = ""; // Changed to innerHTML
-    }
+  <div class="counter-box">Site visit
+     <span id="visitCount">0</span>
+  </div>
 
-    function calculateBill() {
-      const prevUnits = parseFloat(document.getElementById("prevUnits").value);
-      const currentUnits = parseFloat(document.getElementById("currentUnits").value);
-      let result = '';
-
-      if (isNaN(prevUnits) || isNaN(currentUnits) || prevUnits < 0 || currentUnits < 0) {
-        document.getElementById("result").innerHTML = "Please enter valid numbers for both fields."; // Changed to innerHTML
-        return;
-      }
-
-      if (currentUnits < prevUnits) {
-        document.getElementById("result").innerHTML = "Current unit reading cannot be less than previous month units."; // Changed to innerHTML
-        return;
-      }
-
-      const units = currentUnits - prevUnits;
-
-      let remaining = units;
-      let total = 0;
-
-      const breakdown = [];
-
-      if (remaining > 0) {
-        const slab = Math.min(remaining, 100);
-        const cost = slab * 3.40;
-        total += cost;
-        breakdown.push(`First 100 units @ ₹3.40 = ₹${cost.toFixed(2)}`);
-        remaining -= slab;
-      }
-
-      if (remaining > 0) {
-        const slab = Math.min(remaining, 100);
-        const cost = slab * 4.30;
-        total += cost;
-        breakdown.push(`Next 100 units @ ₹4.30 = ₹${cost.toFixed(2)}`);
-        remaining -= slab;
-      }
-
-      if (remaining > 0) {
-        const slab = Math.min(remaining, 200);
-        const cost = slab * 6.70;
-        total += cost;
-        breakdown.push(`Next 200 units @ ₹6.70 = ₹${cost.toFixed(2)}`);
-        remaining -= slab;
-      }
-
-      if (remaining > 0) {
-        const cost = remaining * 7.35;
-        total += cost;
-        breakdown.push(`Remaining ${remaining} units @ ₹7.35 = ₹${cost.toFixed(2)}`);
-      }
-
-      const fixedCharge = 80; // 4 kW * ₹20/kW
-      const electricityDuty = units * 0.06;
-      const grandTotal = total + fixedCharge + electricityDuty;
-
-      result += `Units Consumed: ${units}<br>`;
-      result += `(Current: ${currentUnits} - Previous: ${prevUnits})<br><br><strong>Breakdown:</strong><br>${breakdown.join('<br>')}`;
-      result += `<br>Fixed Charges: ₹${fixedCharge.toFixed(2)}`;
-      result += `<br>Electricity Duty @ ₹0.06/unit: ₹${electricityDuty.toFixed(2)}`;
-      result += `<br><br><strong>Total Payable: ₹${grandTotal.toFixed(2)}</strong>`;
-
-      document.getElementById("result").innerHTML = result; // Changed to innerHTML
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
