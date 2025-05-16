@@ -7,6 +7,8 @@ body {
     }
 h1 {
       text-align: center;
+      background-color: #2d60e2fb;
+      color: white
     }
 .container {
       max-width: 600px;
@@ -28,7 +30,7 @@ input {
 button {
       padding: 10px;
       margin-top: 20px;
-      background: #2d89ef;
+      background: #3ead63;
       color: white;
       font-size: 16px;
       border: none;
